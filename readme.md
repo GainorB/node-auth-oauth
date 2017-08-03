@@ -1,6 +1,5 @@
 
-# Node Authentication API using Passport OAuth Strategies
-## using Facebook, Twitter and Google Logins
+# Node Authentication API using Passport OAuth Strategies (using Facebook, Twitter and Google Logins)
 
 ### TECHNOLOGIES/NPM MODULES
 1. passport
@@ -36,9 +35,11 @@
 5. Lastly, go to Library > Social APIs > Google+ API (enable this API)
 
 ### DOCUMENTATION
-1. Passport-Facebook: https://github.com/jaredhanson/passport-facebook
-2. Passport-Twitter: https://github.com/jaredhanson/passport-twitter
-3. Passport-Google: https://github.com/jaredhanson/passport-google-oauth2
+1. Passport: http://passportjs.org/ 
+2. Passport-Facebook: https://github.com/jaredhanson/passport-facebook
+3. Passport-Twitter: https://github.com/jaredhanson/passport-twitter
+4. Passport-Google: https://github.com/jaredhanson/passport-google-oauth2
+5. Express-Session: https://github.com/expressjs/session
 
 ### DOWNLOAD PROJECT & INSTALL
 1. Git clone this project
