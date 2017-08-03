@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title><%= title %></title>
+</head>
+<body>
+<% if(user) { %>
+
+    <h3>User ID</h3> <%= user.id %>
+    <h3>Token</h3> <span class="token"><%= user.token %></span>
+    <h3>Email</h3> <%= user.email %>
+    <h3>Name</h3> <%= user.name %>
+    <h3><a href="/auth/logout"><button type="button" class="btn btn-danger btn-xs">Logout</button></a></h3>
+
+<% } else { %>
+
+    <h1><i class="fa fa-facebook-official" aria-hidden="true"></i> <a href="/auth/facebook">Login with Facebook</a></h1>
+    <h1><i class="fa fa-twitter-square" aria-hidden="true"></i> <a href="/auth/twitter">Login with Twitter</a></h1>
+    <h1><i class="fa fa-google" aria-hidden="true"></i> <a href="/auth/google">Login with Google</a></h1>
+<% } %>
+</body>
+
+<script type="text/javascript">
+// Test for the ugliness.
+if (window.location.hash == '#_=_'){
+
+    // Check if the browser supports history.replaceState.
+    if (history.replaceState) {
+
+        // Keep the exact URL up to the hash.
+        var cleanHref = window.location.href.split('#')[0];
+
+        // Replace the URL in the address bar without messing with the back button.
+        history.replaceState(null, null, cleanHref);
+
+    } else {
+
+        // Well, you're on an old browser, we can get rid of the _=_ but not the #.
+        window.location.hash = '';
+
+    }
+}
+</script>
+</html>
