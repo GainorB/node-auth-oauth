@@ -51,7 +51,7 @@
     * Create .env file in your project root with these variables
 ```
 DATABASE_URL=postgres://localhost:5432/oauthsocial_app
-SECRET_KEY=r![\xfdPo\xa0\x07G\xf2\xf9_zsWKB\x0e4+"+*\xbe
+SECRET_KEY=38219ejhhsd@#$%$@^$#%Cdviroirer
 
 FB_CLIENT_ID=xxxxxxxxxxxxxxxxxxxx
 FB_CLIENT_SECRET=xxxxxxxxxxxxxxxxxxxx
