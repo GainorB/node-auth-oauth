@@ -1,6 +1,6 @@
 
 # Node Authentication API using Passport OAuth Strategies
-### using Facebook, Twitter and Google Logins
+## using Facebook, Twitter and Google Logins
 
 ### TECHNOLOGIES/NPM MODULES
 1. passport
@@ -47,7 +47,7 @@
 4. Run this command: psql -f ./config/db/schema.sql
 5. This command will create a PostgreSQL database along with the tables
 6. Setup environment variables:
-    * Create .env file in your project root with these two variables
+    * Create .env file in your project root with these variables
 ```
 DATABASE_URL=postgres://localhost:5432/oauthsocial_app
 SECRET_KEY=r![\xfdPo\xa0\x07G\xf2\xf9_zsWKB\x0e4+"+*\xbe
