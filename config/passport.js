@@ -1,21 +1,22 @@
+// PASSPORT STRATEGIES
 const FacebookStrategy = require('passport-facebook').Strategy;
 const TwitterStrategy = require('passport-twitter').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
+// REQUIRE USER MODEL
 const User = require('../models/user');
 
-module.exports = function(passport){
+module.exports = (passport) => {
 
+    // WHEN YOU LOG IN, INITIALIZE SESSION
     passport.serializeUser((user, done) => {
         done(null, user.id);
     });
 
+    // WHEN YOU LOG OUT, CLEAR SESSION
     passport.deserializeUser((id, done) => {
         User.findById(id, (err, user) => {
-            done(null, user);
-        })
-        .catch(err => {
-            done(err, null);
+            done(err, user);
         });
     });
 
@@ -24,25 +25,34 @@ module.exports = function(passport){
         clientID: process.env.FB_CLIENT_ID,
         clientSecret: process.env.FB_CLIENT_SECRET,
         callbackURL: process.env.FB_CALLBACK,
-        profileFields: ['id', 'emails' , 'name', 'displayName', 'gender', 'profileUrl']
-        },(accessToken, refreshToken, profile, done) => {
+        profileFields: ['id', 'emails' , 'name', 'displayName', 'gender', 'profileUrl'],
+        passReqToCallback: true
+        },(req, accessToken, refreshToken, profile, done) => {
             process.nextTick(function() {
-                User.findById(profile.id, (err, user) => {
+                User.findById(profile.id, (err, existingUser) => {
                     if(err) return done(err);
 
-                    if(user) {
-                        return done(null, user);
+                    // IF ACCOUNT ALREADY EXISTS
+                    if(existingUser) {
+                        req.flash("info", "Facebook account already linked, automatically logged in with facebook.");
+                        return done(null, existingUser);
                     } else {
-                        let user = {
+
+                        // CREATE AN OBJECT WITH NEW USERS PROFILE INFORMATION TAKEN FROM FACEBOOK
+                        const NewUser = {
                             id: profile.id,
                             token: accessToken,
                             email: profile.emails[0].value,
                             name: profile.name.givenName + ' ' + profile.name.familyName
                         }
-                    User.create(user)
+
+                    // CREATE A NEW USER USING USER MODEL
+                    User.create(NewUser)
                         .then(user => {
+                            req.flash("success", "Facebook account linked.");
+                            // RETURNS THE NEW USER THAT WAS CREATED
                             return done(null, user);
-                        })
+                        });
                     }
                 });
             }
@@ -54,25 +64,34 @@ module.exports = function(passport){
         consumerKey: process.env.TW_CONSUMER_KEY,
         consumerSecret: process.env.TW_CONSUMER_SECRET,
         callbackURL: process.env.TW_CALLBACK,
-        includeEmail: true
-    }, (token, tokenSecret, profile, done) => {
+        includeEmail: true,
+        passReqToCallback: true
+    }, (req, token, tokenSecret, profile, done) => {
             process.nextTick(function() {
-                User.findById(profile.id, (err, user) => {
+                User.findById(profile.id, (err, existingUser) => {
                     if(err) return done(err);
 
-                    if(user) {
-                        return done(null, user);
+                    // IF ACCOUNT ALREADY EXISTS
+                    if(existingUser) {
+                        req.flash("info", "Twitter account already linked, automatically logged in with twitter.");
+                        return done(null, existingUser);
                     } else {
-                        let user = {
+
+                        // CREATE AN OBJECT WITH NEW USERS PROFILE INFORMATION TAKEN FROM TWITTER
+                        const NewUser = {
                             id: profile.id,
                             token: token,
                             email: profile.emails[0].value,
                             name: profile.username
                         }
-                    User.create(user)
+
+                    // CREATE A NEW USER USING USER MODEL
+                    User.create(NewUser)
                         .then(user => {
+                            req.flash("success", "Twitter account linked.");
+                            // RETURNS THE NEW USER THAT WAS CREATED
                             return done(null, user);
-                        })
+                        });
                     }
                 });
             }
@@ -83,30 +102,37 @@ module.exports = function(passport){
     passport.use(new GoogleStrategy({
         clientID: process.env.G_CLIENT_ID,
         clientSecret: process.env.G_CLIENT_SECRET,
-        callbackURL: process.env.G_CALLBACK
+        callbackURL: process.env.G_CALLBACK,
+        passReqToCallback: true
     },
-    (accessToken, refreshToken, profile, cb) => {
-        console.log(profile);
+    (req, accessToken, refreshToken, profile, cb) => {
             process.nextTick(function() {
-                User.findById(profile.id, (err, user) => {
+                User.findById(profile.id, (err, existingUser) => {
                     if(err) return cb(err);
-
-                    if(user) {
-                        return cb(null, user);
+                    
+                    // IF ACCOUNT ALREADY EXISTS
+                    if(existingUser) {
+                        req.flash("info", "Google account already linked, automatically logged in with google.");
+                        return cb(null, existingUser);
                     } else {
-                        let user = {
+                        // CREATE AN OBJECT WITH NEW USERS PROFILE INFORMATION TAKEN FROM GOOGLE
+                        const NewUser = {
                             id: profile.id,
                             token: accessToken,
                             email: profile.emails[0].value,
                             name: profile.name.givenName + ' ' + profile.name.familyName
                         }
-                        User.create(user)
+
+                        // CREATE A NEW USER USING USER MODEL
+                        User.create(NewUser)
                             .then(user => {
+                                req.flash("success", "Google account linked.");
+                                // RETURNS THE NEW USER THAT WAS CREATED
                                 return cb(null, user);
-                            })
+                            });
                     }
-                })
-            })
+                });
+            });
         }
     ));
 

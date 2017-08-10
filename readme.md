@@ -10,6 +10,8 @@
 6. pg-promise
 7. bluebird
 8. express-session
+9. connect-pg-simple
+10. connect-flash
 
 ## SETTING UP CREDENTIALS
 
@@ -35,11 +37,12 @@
 5. Lastly, go to Library > Social APIs > Google+ API (enable this API)
 
 ### DOCUMENTATION
-1. Passport: http://passportjs.org/ 
-2. Passport-Facebook: https://github.com/jaredhanson/passport-facebook
-3. Passport-Twitter: https://github.com/jaredhanson/passport-twitter
-4. Passport-Google: https://github.com/jaredhanson/passport-google-oauth2
-5. Express-Session: https://github.com/expressjs/session
+1. passport: http://passportjs.org/ 
+2. passport-facebook: https://github.com/jaredhanson/passport-facebook
+3. passport-twitter: https://github.com/jaredhanson/passport-twitter
+4. passport-google-oauth20: https://github.com/jaredhanson/passport-google-oauth2
+5. express-session: https://github.com/expressjs/session
+6. connect-pg-simple: https://github.com/voxpelli/node-connect-pg-simple
 
 ### DOWNLOAD PROJECT & INSTALL
 1. Git clone this project
@@ -65,7 +68,11 @@ G_CLIENT_ID=xxxxxxxxxxxxxxxxxxxx
 G_CLIENT_SECRET=xxxxxxxxxxxxxxxxxxxx
 G_CALLBACK=................/google/oauth2callback
 ```
-7. To run the application, you need to install the dependencies, run this command: npm install --save
-8. To start the application, run this command: npm start
-9. The application will run at: localhost:3000, if that port is already in use, run this command: PORT=1738 npm start
-10. This command will start the server at: localhost:1738
+7. Now create the session table for tracking sessions in your database by running this command to create a new table:
+```
+psql [mydatabase] < node_modules/connect-pg-simple/table.sql
+```
+8. To run the application, you need to install the dependencies, run this command: npm install --save
+9. To start the application, run this command: npm start
+10. The application will run at: localhost:3000, if that port is already in use, run this command: PORT=1738 npm start
+11. This command will start the server at: localhost:1738

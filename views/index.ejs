@@ -10,6 +10,7 @@
     <title><%= title %></title>
 </head>
 <body>
+<p><%- messages('messages/message', locals) %></p>
 <% if(user) { %>
 
     <h3>User ID</h3> <%= user.id %>
