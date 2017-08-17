@@ -10,6 +10,7 @@ module.exports = {
 
     // LOGOUT
     logOut(req, res, next){
+        req.flash('info', 'You are now logged out');
         req.logout();
         res.redirect('/');
     }
