@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const path = require('path');
-const bodyParser = require('body-parser'); 
+const bodyParser = require('body-parser');
 
 const http = require('http');
 const server = http.createServer(app);
@@ -21,19 +21,21 @@ app.set('view engine', 'ejs');
 
 // EXPRESS FLASH MIDDLEWARE
 app.use(require('connect-flash')());
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   res.locals.messages = require('express-messages')(req, res);
   next();
 });
 
 // POSTGRESQL SESSION STORE MANAGEMENT
-app.use(session({
+app.use(
+  session({
     store: new (require('connect-pg-simple')(session))(),
     secret: process.env.SECRET_KEY,
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 } // 7 days
-}));
+  })
+);
 
 // MIDDLEWARE
 app.use(logger('dev'));
@@ -46,10 +48,10 @@ require('./config/passport')(passport);
 
 // CORS
 app.all('/*', (req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
 });
 
 // SECURITY
@@ -69,8 +71,8 @@ console.log('Server listening on port ' + port);
 
 // ERROR HANDLER
 app.use((err, req, res, next) => {
-    console.log(err);
-    res.status(err.status || 500).send(err.stack);
+  console.log(err);
+  res.status(err.status || 500).send(err.stack);
 });
 
 module.exports = app;
